@@ -5,7 +5,6 @@ from matplotlib.patches import FancyArrowPatch
 from mpl_toolkits.mplot3d import proj3d
 
 class Arrow3D(FancyArrowPatch):
-    
     def __init__(self, xs, ys, zs, *args, **kwargs):
         FancyArrowPatch.__init__(self, (0, 0), (0, 0), *args, **kwargs)
         self._verts3d = xs, ys, zs
@@ -15,6 +14,20 @@ class Arrow3D(FancyArrowPatch):
         xs, ys, zs = proj3d.proj_transform(xs3d, ys3d, zs3d, renderer.M)
         self.set_positions((xs[0], ys[0]), (xs[1], ys[1]))
         FancyArrowPatch.draw(self, renderer)
+
+class OVSVector(object):
+    def __init__(self, a_, m_=np.arrray([0,0,0])):
+        self.a_ = a_
+        self.m_ = m_
+
+    def get_vector(self):
+        return self.a_ + self.m_
+
+class OVSPlane(object):
+    def __init__(self):
+        self.r_ = None
+        self.n_ = None
+        self.D_ = 0
 
 class OpenVectorSpace(object):
     def __init__(self):
@@ -40,6 +53,9 @@ class OpenVectorSpace(object):
         return mag
     
     def plot(self, vectors, color=None):
+        """
+        `vectors` should be a list of OVSVector Objects
+        """
         if color == None:
             color = [np.random.choice(['#ff6b6b', '#5f27cd', '#54a0ff', '#feca57', '#1dd1a1']) for i in range(len(vectors))]
         for i in range(len(vectors)):
@@ -98,24 +114,7 @@ class OpenVectorSpace(object):
         divider_vector = self.kvecmul(k, vec)
         return divider_vector
 
-# class OVSLine(OpenVectorSpace):
-#     # r = a + km
-#     def __init__(self, a, m1=np.array([0,0,0]), m2=np.array([0,0,0]), lambda_=None):
-#         super().__init__()
-#         self.a_ = a
-#         self.m1_ = m1
-#         self.m2_ = m2
-#         self.lambda_ = lambda_
-
-#     def plot(self):
-#         self.ax.
-
-# class OVSPlane(OpenVectorSpace):
-#     # r.n = D
-#     def __init__(self):
-#         self.D_ = None
-#         self.n_ = None
-#         self.r_ = None
-    
-#     def visualise(self):
-#         return self.D_ + self.n_
+    def draw_plane(self):
+        plane = OVSPlane()
+        self.fig.gca(projection='3d')
+        plt3d.plot_surface(xx, yy, z, alpha=0.2)

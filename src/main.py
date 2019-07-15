@@ -6,6 +6,7 @@ a_ = np.array([1, 2, 3])
 b_ = np.array([3, 5, 1])
 c_ = ovs.cross(a_, b_) # cross product
 d_ = ovs.kvecmul(2, c_) # multiplying scalar to vector
+p_ = ovs.draw_plane()
 
 ovs.plot([a_, b_, d_])
 ovs.add_legend(['a', 'b', 'd'])
